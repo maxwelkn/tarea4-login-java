@@ -86,6 +86,6 @@ public class LoginFrame extends JFrame {
     }
 
     private void abrirRegistro() {
-        JOptionPane.showMessageDialog(this, "Luego conectaremos esta ventana con Registro.");
+        new RegistroFrame();
     }
 }
