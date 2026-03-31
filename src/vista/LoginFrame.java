@@ -78,8 +78,8 @@ public class LoginFrame extends JFrame {
         Usuario usuarioEncontrado = usuarioServicio.iniciarSesion(usuario, contrasena);
 
         if (usuarioEncontrado != null) {
-            JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso.");
-            dispose();
+        	dispose();
+        	new PrincipalFrame();
         } else {
             JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.");
         }
