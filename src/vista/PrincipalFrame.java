@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -69,6 +70,7 @@ public class PrincipalFrame extends JFrame {
 
         btnNuevo.addActionListener(e -> new RegistroFrame());
         btnCerrarSesion.addActionListener(e -> cerrarSesion());
+        btnEliminar.addActionListener(e -> eliminarUsuario());
 
         cargarUsuarios();
 
@@ -90,6 +92,35 @@ public class PrincipalFrame extends JFrame {
                 usuario.getNombreUsuario()
             };
             modeloTabla.addRow(fila);
+        }
+    }
+    
+    private void eliminarUsuario() {
+        int filaSeleccionada = tablaUsuarios.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un usuario para eliminar.");
+            return;
+        }
+
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de que desea eliminar este usuario?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            int id = Integer.parseInt(modeloTabla.getValueAt(filaSeleccionada, 0).toString());
+
+            boolean eliminado = usuarioServicio.eliminarUsuario(id);
+
+            if (eliminado) {
+                JOptionPane.showMessageDialog(this, "Usuario eliminado correctamente.");
+                cargarUsuarios();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo eliminar el usuario.");
+            }
         }
     }
 
