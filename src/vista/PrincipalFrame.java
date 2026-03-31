@@ -71,6 +71,7 @@ public class PrincipalFrame extends JFrame {
         btnNuevo.addActionListener(e -> new RegistroFrame());
         btnCerrarSesion.addActionListener(e -> cerrarSesion());
         btnEliminar.addActionListener(e -> eliminarUsuario());
+        btnActualizar.addActionListener(e -> actualizarUsuario());
 
         cargarUsuarios();
 
@@ -92,6 +93,24 @@ public class PrincipalFrame extends JFrame {
                 usuario.getNombreUsuario()
             };
             modeloTabla.addRow(fila);
+        }
+    }
+    
+    private void actualizarUsuario() {
+        int filaSeleccionada = tablaUsuarios.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un usuario para actualizar.");
+            return;
+        }
+
+        int id = Integer.parseInt(modeloTabla.getValueAt(filaSeleccionada, 0).toString());
+        Usuario usuario = usuarioServicio.buscarPorId(id);
+
+        if (usuario != null) {
+            new EditarUsuarioFrame(usuario, this);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo encontrar el usuario.");
         }
     }
     
