@@ -25,8 +25,14 @@ public class RegistroFrame extends JFrame {
     private JButton btnVolver;
 
     private UsuarioServicio usuarioServicio;
+    private PrincipalFrame principalFrame;
 
     public RegistroFrame() {
+        this(null);
+    }
+
+    public RegistroFrame(PrincipalFrame principalFrame) {
+        this.principalFrame = principalFrame;
         usuarioServicio = new UsuarioServicio();
 
         setTitle("Registro de Usuario");
@@ -165,6 +171,11 @@ public class RegistroFrame extends JFrame {
 
         if (registrado) {
             JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
+
+            if (principalFrame != null) {
+                principalFrame.cargarUsuarios();
+            }
+
             dispose();
         } else {
             JOptionPane.showMessageDialog(this, "No se pudo registrar el usuario. Verifique si el usuario o correo ya existen.");

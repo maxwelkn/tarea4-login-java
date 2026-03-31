@@ -68,7 +68,7 @@ public class PrincipalFrame extends JFrame {
         btnCerrarSesion.setBounds(550, 380, 150, 35);
         add(btnCerrarSesion);
 
-        btnNuevo.addActionListener(e -> new RegistroFrame());
+        btnNuevo.addActionListener(e -> new RegistroFrame(this));
         btnCerrarSesion.addActionListener(e -> cerrarSesion());
         btnEliminar.addActionListener(e -> eliminarUsuario());
         btnActualizar.addActionListener(e -> actualizarUsuario());
