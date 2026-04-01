@@ -17,11 +17,13 @@ public class PanelDegradado extends JPanel {
         int ancho = getWidth();
         int alto = getHeight();
 
+        // Crea un fondo con efecto degradado
         GradientPaint gp = new GradientPaint(
                 0, 0, new Color(170, 220, 235),
                 ancho, alto, new Color(0, 120, 190)
         );
 
+        // Pinta el panel con el degradado
         g2d.setPaint(gp);
         g2d.fillRect(0, 0, ancho, alto);
     }
