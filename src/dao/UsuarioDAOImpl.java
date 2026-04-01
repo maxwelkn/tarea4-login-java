@@ -11,9 +11,11 @@ import modelo.Usuario;
 
 public class UsuarioDAOImpl implements UsuarioDAO {
 
+    // Conexion que se usara para todas las operaciones
     private Connection conexion;
 
     public UsuarioDAOImpl() {
+        // Obtiene la conexion desde la clase ConexionBD
         conexion = ConexionBD.getInstancia().getConexion();
     }
 
@@ -30,6 +32,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             ps.setString(5, usuario.getCorreo());
             ps.setString(6, usuario.getContrasena());
 
+            // Ejecuta el registro y devuelve true si se inserto correctamente
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.out.println("Error al registrar usuario: " + e.getMessage());
@@ -48,6 +51,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
             ResultSet rs = ps.executeQuery();
 
+            // Si encuentra coincidencia, crea y devuelve el usuario
             if (rs.next()) {
                 return new Usuario(
                     rs.getInt("id"),
@@ -75,6 +79,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             PreparedStatement ps = conexion.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
+            // Recorre todos los registros y los agrega a la lista
             while (rs.next()) {
                 Usuario usuario = new Usuario(
                     rs.getInt("id"),
@@ -109,6 +114,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             ps.setString(6, usuario.getContrasena());
             ps.setInt(7, usuario.getId());
 
+            // Ejecuta la actualizacion del usuario
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.out.println("Error al actualizar usuario: " + e.getMessage());
@@ -124,6 +130,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             PreparedStatement ps = conexion.prepareStatement(sql);
             ps.setInt(1, id);
 
+            // Elimina el usuario segun su id
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.out.println("Error al eliminar usuario: " + e.getMessage());
@@ -141,6 +148,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
             ResultSet rs = ps.executeQuery();
 
+            // Busca un usuario especifico y lo devuelve si existe
             if (rs.next()) {
                 return new Usuario(
                     rs.getInt("id"),
