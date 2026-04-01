@@ -6,9 +6,9 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
 import util.Mensajes;
 import modelo.Usuario;
 import servicio.UsuarioServicio;
@@ -18,6 +18,7 @@ import util.PanelRedondeado;
 
 public class EditarUsuarioFrame extends JFrame {
 
+    // Campos del formulario
     private JTextField txtNombreUsuario;
     private JTextField txtNombre;
     private JTextField txtApellido;
@@ -26,6 +27,7 @@ public class EditarUsuarioFrame extends JFrame {
     private JPasswordField txtContrasena;
     private BotonRedondeado btnGuardar;
 
+    // Objetos necesarios para editar y actualizar el usuario
     private Usuario usuario;
     private UsuarioServicio usuarioServicio;
     private PrincipalFrame principalFrame;
@@ -35,16 +37,19 @@ public class EditarUsuarioFrame extends JFrame {
         this.principalFrame = principalFrame;
         this.usuarioServicio = new UsuarioServicio();
 
+        // Configuracion general de la ventana
         setTitle("Actualizar Usuario");
         setSize(760, 560);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
 
+        // Fondo principal con degradado
         PanelDegradado fondo = new PanelDegradado();
         fondo.setLayout(null);
         setContentPane(fondo);
 
+        // Titulo principal
         JLabel lblTitulo = new JLabel("E D I T A R   U S U A R I O");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 30));
         lblTitulo.setForeground(Color.WHITE);
@@ -52,11 +57,13 @@ public class EditarUsuarioFrame extends JFrame {
         lblTitulo.setHorizontalAlignment(JLabel.CENTER);
         fondo.add(lblTitulo);
 
+        // Panel central donde van los campos
         PanelRedondeado panelCentral = new PanelRedondeado(new Color(255, 255, 255, 90), 35);
         panelCentral.setLayout(null);
         panelCentral.setBounds(180, 95, 390, 350);
         fondo.add(panelCentral);
 
+        // Campos cargados con los datos actuales del usuario
         txtNombreUsuario = crearCampo(panelCentral, 70, usuario.getNombreUsuario());
         txtNombre = crearCampo(panelCentral, 115, usuario.getNombre());
         txtApellido = crearCampo(panelCentral, 160, usuario.getApellido());
@@ -64,6 +71,7 @@ public class EditarUsuarioFrame extends JFrame {
         txtCorreo = crearCampo(panelCentral, 250, usuario.getCorreo());
         txtContrasena = crearPassword(panelCentral, 295, usuario.getContrasena());
 
+        // Etiquetas de los campos
         JLabel lblNombreUsuario = crearLabel("Nombre de usuario", 55);
         JLabel lblNombre = crearLabel("Nombre", 100);
         JLabel lblApellido = crearLabel("Apellido", 145);
@@ -78,6 +86,7 @@ public class EditarUsuarioFrame extends JFrame {
         panelCentral.add(lblCorreo);
         panelCentral.add(lblContrasena);
 
+        // Boton para guardar los cambios
         btnGuardar = new BotonRedondeado("Guardar Cambios");
         btnGuardar.setFont(new Font("Arial", Font.BOLD, 13));
         btnGuardar.setBounds(300, 465, 160, 35);
@@ -88,6 +97,7 @@ public class EditarUsuarioFrame extends JFrame {
         setVisible(true);
     }
 
+    // Crea un campo de texto con estilo y valor inicial
     private JTextField crearCampo(PanelRedondeado panel, int y, String valor) {
         JTextField campo = new JTextField(valor);
         campo.setBounds(45, y, 300, 32);
@@ -100,6 +110,7 @@ public class EditarUsuarioFrame extends JFrame {
         return campo;
     }
 
+    // Crea el campo de contrasena con el mismo estilo visual
     private JPasswordField crearPassword(PanelRedondeado panel, int y, String valor) {
         JPasswordField campo = new JPasswordField(valor);
         campo.setBounds(45, y, 300, 32);
@@ -112,6 +123,7 @@ public class EditarUsuarioFrame extends JFrame {
         return campo;
     }
 
+    // Crea las etiquetas de cada campo
     private JLabel crearLabel(String texto, int y) {
         JLabel label = new JLabel(texto);
         label.setForeground(Color.WHITE);
@@ -120,6 +132,7 @@ public class EditarUsuarioFrame extends JFrame {
         return label;
     }
 
+    // Obtiene los datos, valida y actualiza el usuario
     private void actualizarUsuario() {
         String nombreUsuario = txtNombreUsuario.getText().trim();
         String nombre = txtNombre.getText().trim();
@@ -128,12 +141,14 @@ public class EditarUsuarioFrame extends JFrame {
         String correo = txtCorreo.getText().trim();
         String contrasena = new String(txtContrasena.getPassword()).trim();
 
+        // Verifica que ningun campo este vacio
         if (nombreUsuario.isEmpty() || nombre.isEmpty() || apellido.isEmpty()
                 || telefono.isEmpty() || correo.isEmpty() || contrasena.isEmpty()) {
-        	Mensajes.mostrarInfo(this, "Todos los campos son obligatorios.");
+            Mensajes.mostrarInfo(this, "Todos los campos son obligatorios.");
             return;
         }
 
+        // Actualiza el objeto usuario con los nuevos datos
         usuario.setNombreUsuario(nombreUsuario);
         usuario.setNombre(nombre);
         usuario.setApellido(apellido);
@@ -143,12 +158,13 @@ public class EditarUsuarioFrame extends JFrame {
 
         boolean actualizado = usuarioServicio.actualizarUsuario(usuario);
 
+        // Muestra el resultado de la actualizacion
         if (actualizado) {
-        	Mensajes.mostrarInfo(this, "Usuario actualizado correctamente.");
+            Mensajes.mostrarInfo(this, "Usuario actualizado correctamente.");
             principalFrame.cargarUsuarios();
             dispose();
         } else {
-        	Mensajes.mostrarError(this, "No se pudo actualizar el usuario.");
+            Mensajes.mostrarError(this, "No se pudo actualizar el usuario.");
         }
     }
 }

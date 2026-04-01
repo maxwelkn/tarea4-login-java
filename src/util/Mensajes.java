@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 
 public class Mensajes {
 
+    // Muestra un mensaje informativo al usuario
     public static void mostrarInfo(JFrame ventana, String mensaje) {
         JOptionPane.showMessageDialog(
                 ventana,
@@ -14,6 +15,7 @@ public class Mensajes {
         );
     }
 
+    // Muestra un mensaje de error
     public static void mostrarError(JFrame ventana, String mensaje) {
         JOptionPane.showMessageDialog(
                 ventana,
@@ -23,6 +25,7 @@ public class Mensajes {
         );
     }
 
+    // Muestra una confirmacion y devuelve true si el usuario acepta
     public static boolean confirmar(JFrame ventana, String mensaje) {
         int respuesta = JOptionPane.showConfirmDialog(
                 ventana,

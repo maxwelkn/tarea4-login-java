@@ -3,15 +3,15 @@ package vista;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.List;
-
+import javax.swing.JOptionPane;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
 import util.Mensajes;
 import modelo.Usuario;
 import servicio.UsuarioServicio;
@@ -21,6 +21,7 @@ import util.PanelRedondeado;
 
 public class PrincipalFrame extends JFrame {
 
+    // Componentes principales de la ventana
     private JTable tablaUsuarios;
     private DefaultTableModel modeloTabla;
     private BotonRedondeado btnNuevo;
@@ -28,21 +29,25 @@ public class PrincipalFrame extends JFrame {
     private BotonRedondeado btnEliminar;
     private BotonRedondeado btnCerrarSesion;
 
+    // Servicio que maneja las operaciones de los usuarios
     private UsuarioServicio usuarioServicio;
 
     public PrincipalFrame() {
         usuarioServicio = new UsuarioServicio();
 
+        // Configuracion general de la ventana
         setTitle("Pantalla Principal");
         setSize(1000, 650);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
+        // Fondo principal con degradado
         PanelDegradado fondo = new PanelDegradado();
         fondo.setLayout(null);
         setContentPane(fondo);
 
+        // Titulo principal
         JLabel lblTitulo = new JLabel("U S U A R I O S   R E G I S T R A D O S");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 25));
         lblTitulo.setForeground(Color.WHITE);
@@ -50,11 +55,13 @@ public class PrincipalFrame extends JFrame {
         lblTitulo.setHorizontalAlignment(JLabel.CENTER);
         fondo.add(lblTitulo);
 
+        // Panel central donde se muestra la tabla y los botones
         PanelRedondeado panelCentral = new PanelRedondeado(new Color(255, 255, 255, 90), 35);
         panelCentral.setLayout(null);
         panelCentral.setBounds(70, 95, 840, 450);
         fondo.add(panelCentral);
 
+        // Modelo de la tabla con las columnas de los usuarios
         modeloTabla = new DefaultTableModel();
         modeloTabla.addColumn("ID");
         modeloTabla.addColumn("Nombre");
@@ -63,6 +70,7 @@ public class PrincipalFrame extends JFrame {
         modeloTabla.addColumn("Correo electronico");
         modeloTabla.addColumn("Usuario");
 
+        // Tabla donde se cargan los usuarios registrados
         tablaUsuarios = new JTable(modeloTabla);
         tablaUsuarios.setRowHeight(28);
         tablaUsuarios.setFont(new Font("Arial", Font.PLAIN, 13));
@@ -71,46 +79,55 @@ public class PrincipalFrame extends JFrame {
         tablaUsuarios.setGridColor(new Color(220, 220, 220));
         tablaUsuarios.setBorder(BorderFactory.createEmptyBorder());
 
+        // Estilo del encabezado de la tabla
         JTableHeader encabezado = tablaUsuarios.getTableHeader();
         encabezado.setFont(new Font("Arial", Font.BOLD, 13));
         encabezado.setBackground(new Color(52, 73, 94));
         encabezado.setForeground(Color.WHITE);
 
+        // Scroll para visualizar la tabla
         JScrollPane scrollPane = new JScrollPane(tablaUsuarios);
         scrollPane.setBounds(35, 35, 770, 280);
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
         panelCentral.add(scrollPane);
 
+        // Boton para abrir el formulario de registro
         btnNuevo = new BotonRedondeado("NUEVO");
         btnNuevo.setFont(new Font("Arial", Font.BOLD, 13));
         btnNuevo.setBounds(45, 360, 150, 38);
         panelCentral.add(btnNuevo);
 
+        // Boton para actualizar el usuario seleccionado
         btnActualizar = new BotonRedondeado("ACTUALIZAR");
         btnActualizar.setFont(new Font("Arial", Font.BOLD, 13));
         btnActualizar.setBounds(235, 360, 150, 38);
         panelCentral.add(btnActualizar);
 
+        // Boton para eliminar el usuario seleccionado
         btnEliminar = new BotonRedondeado("ELIMINAR");
         btnEliminar.setFont(new Font("Arial", Font.BOLD, 13));
         btnEliminar.setBounds(425, 360, 150, 38);
         panelCentral.add(btnEliminar);
 
+        // Boton para cerrar sesion
         btnCerrarSesion = new BotonRedondeado("CERRAR SESION");
         btnCerrarSesion.setFont(new Font("Arial", Font.BOLD, 13));
         btnCerrarSesion.setBounds(615, 360, 170, 38);
         panelCentral.add(btnCerrarSesion);
 
+        // Eventos de los botones
         btnNuevo.addActionListener(e -> new RegistroFrame(this));
         btnCerrarSesion.addActionListener(e -> cerrarSesion());
         btnEliminar.addActionListener(e -> eliminarUsuario());
         btnActualizar.addActionListener(e -> actualizarUsuario());
 
+        // Carga inicial de usuarios en la tabla
         cargarUsuarios();
 
         setVisible(true);
     }
 
+    // Carga todos los usuarios registrados en la tabla
     public void cargarUsuarios() {
         modeloTabla.setRowCount(0);
 
@@ -129,11 +146,12 @@ public class PrincipalFrame extends JFrame {
         }
     }
 
+    // Abre la ventana para editar el usuario seleccionado
     private void actualizarUsuario() {
         int filaSeleccionada = tablaUsuarios.getSelectedRow();
 
         if (filaSeleccionada == -1) {
-        	Mensajes.mostrarInfo(this, "Debe seleccionar un usuario para actualizar.");
+            Mensajes.mostrarInfo(this, "Debe seleccionar un usuario para actualizar.");
             return;
         }
 
@@ -143,15 +161,16 @@ public class PrincipalFrame extends JFrame {
         if (usuario != null) {
             new EditarUsuarioFrame(usuario, this);
         } else {
-        	Mensajes.mostrarInfo(this, "No se pudo encontrar el usuario.");
+            Mensajes.mostrarInfo(this, "No se pudo encontrar el usuario.");
         }
     }
 
+    // Elimina el usuario seleccionado despues de confirmar la accion
     private void eliminarUsuario() {
         int filaSeleccionada = tablaUsuarios.getSelectedRow();
 
         if (filaSeleccionada == -1) {
-        	Mensajes.mostrarInfo(this, "Debe seleccionar un usuario para eliminar.");
+            Mensajes.mostrarInfo(this, "Debe seleccionar un usuario para eliminar.");
             return;
         }
 
@@ -168,14 +187,15 @@ public class PrincipalFrame extends JFrame {
             boolean eliminado = usuarioServicio.eliminarUsuario(id);
 
             if (eliminado) {
-            	Mensajes.mostrarInfo(this, "Usuario eliminado correctamente.");
+                Mensajes.mostrarInfo(this, "Usuario eliminado correctamente.");
                 cargarUsuarios();
             } else {
-            	Mensajes.mostrarInfo(this, "No se pudo eliminar el usuario.");
+                Mensajes.mostrarInfo(this, "No se pudo eliminar el usuario.");
             }
         }
     }
 
+    // Cierra la sesion actual y vuelve al login
     private void cerrarSesion() {
         dispose();
         new LoginFrame();
