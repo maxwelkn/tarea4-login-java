@@ -1,16 +1,20 @@
 package vista;
 
+import java.awt.Color;
 import java.awt.Font;
 
-import javax.swing.JButton;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
+import util.Mensajes;
 import modelo.Usuario;
 import servicio.UsuarioServicio;
+import util.BotonRedondeado;
+import util.PanelDegradado;
+import util.PanelRedondeado;
 
 public class EditarUsuarioFrame extends JFrame {
 
@@ -20,7 +24,7 @@ public class EditarUsuarioFrame extends JFrame {
     private JTextField txtTelefono;
     private JTextField txtCorreo;
     private JPasswordField txtContrasena;
-    private JButton btnGuardar;
+    private BotonRedondeado btnGuardar;
 
     private Usuario usuario;
     private UsuarioServicio usuarioServicio;
@@ -32,71 +36,88 @@ public class EditarUsuarioFrame extends JFrame {
         this.usuarioServicio = new UsuarioServicio();
 
         setTitle("Actualizar Usuario");
-        setSize(450, 400);
-        setLayout(null);
+        setSize(760, 560);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
-        JLabel lblTitulo = new JLabel("ACTUALIZAR USUARIO");
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setBounds(110, 20, 250, 30);
-        add(lblTitulo);
+        PanelDegradado fondo = new PanelDegradado();
+        fondo.setLayout(null);
+        setContentPane(fondo);
 
-        JLabel lblNombreUsuario = new JLabel("Nombre de Usuario:");
-        lblNombreUsuario.setBounds(30, 70, 140, 25);
-        add(lblNombreUsuario);
+        JLabel lblTitulo = new JLabel("E D I T A R   U S U A R I O");
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 30));
+        lblTitulo.setForeground(Color.WHITE);
+        lblTitulo.setBounds(180, 35, 400, 40);
+        lblTitulo.setHorizontalAlignment(JLabel.CENTER);
+        fondo.add(lblTitulo);
 
-        txtNombreUsuario = new JTextField(usuario.getNombreUsuario());
-        txtNombreUsuario.setBounds(180, 70, 200, 25);
-        add(txtNombreUsuario);
+        PanelRedondeado panelCentral = new PanelRedondeado(new Color(255, 255, 255, 90), 35);
+        panelCentral.setLayout(null);
+        panelCentral.setBounds(180, 95, 390, 350);
+        fondo.add(panelCentral);
 
-        JLabel lblNombre = new JLabel("Nombre:");
-        lblNombre.setBounds(30, 105, 140, 25);
-        add(lblNombre);
+        txtNombreUsuario = crearCampo(panelCentral, 70, usuario.getNombreUsuario());
+        txtNombre = crearCampo(panelCentral, 115, usuario.getNombre());
+        txtApellido = crearCampo(panelCentral, 160, usuario.getApellido());
+        txtTelefono = crearCampo(panelCentral, 205, usuario.getTelefono());
+        txtCorreo = crearCampo(panelCentral, 250, usuario.getCorreo());
+        txtContrasena = crearPassword(panelCentral, 295, usuario.getContrasena());
 
-        txtNombre = new JTextField(usuario.getNombre());
-        txtNombre.setBounds(180, 105, 200, 25);
-        add(txtNombre);
+        JLabel lblNombreUsuario = crearLabel("Nombre de usuario", 55);
+        JLabel lblNombre = crearLabel("Nombre", 100);
+        JLabel lblApellido = crearLabel("Apellido", 145);
+        JLabel lblTelefono = crearLabel("Telefono", 190);
+        JLabel lblCorreo = crearLabel("Correo electronico", 235);
+        JLabel lblContrasena = crearLabel("Contrasena", 280);
 
-        JLabel lblApellido = new JLabel("Apellido:");
-        lblApellido.setBounds(30, 140, 140, 25);
-        add(lblApellido);
+        panelCentral.add(lblNombreUsuario);
+        panelCentral.add(lblNombre);
+        panelCentral.add(lblApellido);
+        panelCentral.add(lblTelefono);
+        panelCentral.add(lblCorreo);
+        panelCentral.add(lblContrasena);
 
-        txtApellido = new JTextField(usuario.getApellido());
-        txtApellido.setBounds(180, 140, 200, 25);
-        add(txtApellido);
-
-        JLabel lblTelefono = new JLabel("Telefono:");
-        lblTelefono.setBounds(30, 175, 140, 25);
-        add(lblTelefono);
-
-        txtTelefono = new JTextField(usuario.getTelefono());
-        txtTelefono.setBounds(180, 175, 200, 25);
-        add(txtTelefono);
-
-        JLabel lblCorreo = new JLabel("Correo electronico:");
-        lblCorreo.setBounds(30, 210, 140, 25);
-        add(lblCorreo);
-
-        txtCorreo = new JTextField(usuario.getCorreo());
-        txtCorreo.setBounds(180, 210, 200, 25);
-        add(txtCorreo);
-
-        JLabel lblContrasena = new JLabel("Contrasena:");
-        lblContrasena.setBounds(30, 245, 140, 25);
-        add(lblContrasena);
-
-        txtContrasena = new JPasswordField(usuario.getContrasena());
-        txtContrasena.setBounds(180, 245, 200, 25);
-        add(txtContrasena);
-
-        btnGuardar = new JButton("Guardar Cambios");
-        btnGuardar.setBounds(140, 305, 160, 30);
-        add(btnGuardar);
+        btnGuardar = new BotonRedondeado("Guardar Cambios");
+        btnGuardar.setFont(new Font("Arial", Font.BOLD, 13));
+        btnGuardar.setBounds(300, 465, 160, 35);
+        fondo.add(btnGuardar);
 
         btnGuardar.addActionListener(e -> actualizarUsuario());
 
         setVisible(true);
+    }
+
+    private JTextField crearCampo(PanelRedondeado panel, int y, String valor) {
+        JTextField campo = new JTextField(valor);
+        campo.setBounds(45, y, 300, 32);
+        campo.setFont(new Font("Arial", Font.PLAIN, 13));
+        campo.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(180, 200, 210), 1),
+                BorderFactory.createEmptyBorder(4, 10, 4, 10)
+        ));
+        panel.add(campo);
+        return campo;
+    }
+
+    private JPasswordField crearPassword(PanelRedondeado panel, int y, String valor) {
+        JPasswordField campo = new JPasswordField(valor);
+        campo.setBounds(45, y, 300, 32);
+        campo.setFont(new Font("Arial", Font.PLAIN, 13));
+        campo.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(180, 200, 210), 1),
+                BorderFactory.createEmptyBorder(4, 10, 4, 10)
+        ));
+        panel.add(campo);
+        return campo;
+    }
+
+    private JLabel crearLabel(String texto, int y) {
+        JLabel label = new JLabel(texto);
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font("Arial", Font.BOLD, 12));
+        label.setBounds(48, y, 180, 15);
+        return label;
     }
 
     private void actualizarUsuario() {
@@ -109,7 +130,7 @@ public class EditarUsuarioFrame extends JFrame {
 
         if (nombreUsuario.isEmpty() || nombre.isEmpty() || apellido.isEmpty()
                 || telefono.isEmpty() || correo.isEmpty() || contrasena.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.");
+        	Mensajes.mostrarInfo(this, "Todos los campos son obligatorios.");
             return;
         }
 
@@ -123,11 +144,11 @@ public class EditarUsuarioFrame extends JFrame {
         boolean actualizado = usuarioServicio.actualizarUsuario(usuario);
 
         if (actualizado) {
-            JOptionPane.showMessageDialog(this, "Usuario actualizado correctamente.");
+        	Mensajes.mostrarInfo(this, "Usuario actualizado correctamente.");
             principalFrame.cargarUsuarios();
             dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "No se pudo actualizar el usuario.");
+        	Mensajes.mostrarError(this, "No se pudo actualizar el usuario.");
         }
     }
 }

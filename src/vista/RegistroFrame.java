@@ -1,16 +1,21 @@
 package vista;
 
+import java.awt.Color;
 import java.awt.Font;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
+import util.Mensajes;
 import modelo.Usuario;
 import servicio.UsuarioServicio;
+import util.BotonRedondeado;
+import util.PanelDegradado;
+import util.PanelRedondeado;
 
 public class RegistroFrame extends JFrame {
 
@@ -21,7 +26,7 @@ public class RegistroFrame extends JFrame {
     private JTextField txtCorreo;
     private JPasswordField txtContrasena;
     private JPasswordField txtConfirmarContrasena;
-    private JButton btnRegistrar;
+    private BotonRedondeado btnRegistrar;
     private JButton btnVolver;
 
     private UsuarioServicio usuarioServicio;
@@ -35,85 +40,101 @@ public class RegistroFrame extends JFrame {
         this.principalFrame = principalFrame;
         usuarioServicio = new UsuarioServicio();
 
-        setTitle("Registro de Usuario");
-        setSize(450, 430);
-        setLayout(null);
+        setTitle("Registro");
+        setSize(760, 620);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
-        JLabel lblTitulo = new JLabel("REGISTRO");
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
-        lblTitulo.setBounds(160, 20, 150, 30);
-        add(lblTitulo);
+        PanelDegradado fondo = new PanelDegradado();
+        fondo.setLayout(null);
+        setContentPane(fondo);
 
-        JLabel lblNombreUsuario = new JLabel("Nombre de Usuario:");
-        lblNombreUsuario.setBounds(30, 70, 140, 25);
-        add(lblNombreUsuario);
+        JLabel lblTitulo = new JLabel("C R E A R   C U E N T A");
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 30));
+        lblTitulo.setForeground(Color.WHITE);
+        lblTitulo.setBounds(180, 35, 400, 40);
+        lblTitulo.setHorizontalAlignment(JLabel.CENTER);
+        fondo.add(lblTitulo);
 
-        txtNombreUsuario = new JTextField();
-        txtNombreUsuario.setBounds(180, 70, 200, 25);
-        add(txtNombreUsuario);
+        PanelRedondeado panelCentral = new PanelRedondeado(new Color(255, 255, 255, 90), 35);
+        panelCentral.setLayout(null);
+        panelCentral.setBounds(180, 95, 390, 420);
+        fondo.add(panelCentral);
 
-        JLabel lblNombre = new JLabel("Nombre:");
-        lblNombre.setBounds(30, 105, 140, 25);
-        add(lblNombre);
+        txtNombreUsuario = crearCampo(panelCentral, 70);
+        txtNombre = crearCampo(panelCentral, 115);
+        txtApellido = crearCampo(panelCentral, 160);
+        txtTelefono = crearCampo(panelCentral, 205);
+        txtCorreo = crearCampo(panelCentral, 250);
+        txtContrasena = crearPassword(panelCentral, 295);
+        txtConfirmarContrasena = crearPassword(panelCentral, 340);
 
-        txtNombre = new JTextField();
-        txtNombre.setBounds(180, 105, 200, 25);
-        add(txtNombre);
+        JLabel lblNombreUsuario = crearLabel("Nombre de usuario", 55);
+        JLabel lblNombre = crearLabel("Nombre", 100);
+        JLabel lblApellido = crearLabel("Apellido", 145);
+        JLabel lblTelefono = crearLabel("Telefono", 190);
+        JLabel lblCorreo = crearLabel("Correo electronico", 235);
+        JLabel lblContrasena = crearLabel("Contrasena", 280);
+        JLabel lblConfirmar = crearLabel("Confirmar contrasena", 325);
 
-        JLabel lblApellido = new JLabel("Apellido:");
-        lblApellido.setBounds(30, 140, 140, 25);
-        add(lblApellido);
+        panelCentral.add(lblNombreUsuario);
+        panelCentral.add(lblNombre);
+        panelCentral.add(lblApellido);
+        panelCentral.add(lblTelefono);
+        panelCentral.add(lblCorreo);
+        panelCentral.add(lblContrasena);
+        panelCentral.add(lblConfirmar);
 
-        txtApellido = new JTextField();
-        txtApellido.setBounds(180, 140, 200, 25);
-        add(txtApellido);
-
-        JLabel lblTelefono = new JLabel("Telefono:");
-        lblTelefono.setBounds(30, 175, 140, 25);
-        add(lblTelefono);
-
-        txtTelefono = new JTextField();
-        txtTelefono.setBounds(180, 175, 200, 25);
-        add(txtTelefono);
-
-        JLabel lblCorreo = new JLabel("Correo electronico:");
-        lblCorreo.setBounds(30, 210, 140, 25);
-        add(lblCorreo);
-
-        txtCorreo = new JTextField();
-        txtCorreo.setBounds(180, 210, 200, 25);
-        add(txtCorreo);
-
-        JLabel lblContrasena = new JLabel("Contrasena:");
-        lblContrasena.setBounds(30, 245, 140, 25);
-        add(lblContrasena);
-
-        txtContrasena = new JPasswordField();
-        txtContrasena.setBounds(180, 245, 200, 25);
-        add(txtContrasena);
-
-        JLabel lblConfirmarContrasena = new JLabel("Confirmar Contrasena:");
-        lblConfirmarContrasena.setBounds(30, 280, 150, 25);
-        add(lblConfirmarContrasena);
-
-        txtConfirmarContrasena = new JPasswordField();
-        txtConfirmarContrasena.setBounds(180, 280, 200, 25);
-        add(txtConfirmarContrasena);
-
-        btnRegistrar = new JButton("Registrar");
-        btnRegistrar.setBounds(90, 330, 120, 30);
-        add(btnRegistrar);
+        btnRegistrar = new BotonRedondeado("REGISTER");
+        btnRegistrar.setFont(new Font("Arial", Font.BOLD, 13));
+        btnRegistrar.setBounds(130, 375, 130, 35);
+        panelCentral.add(btnRegistrar);
 
         btnVolver = new JButton("Volver");
-        btnVolver.setBounds(240, 330, 120, 30);
-        add(btnVolver);
+        btnVolver.setBounds(320, 535, 90, 28);
+        btnVolver.setBackground(new Color(255, 255, 255, 120));
+        btnVolver.setForeground(Color.WHITE);
+        btnVolver.setFocusPainted(false);
+        btnVolver.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255, 150), 1));
+        fondo.add(btnVolver);
 
         btnRegistrar.addActionListener(e -> registrarUsuario());
         btnVolver.addActionListener(e -> dispose());
 
         setVisible(true);
+    }
+
+    private JTextField crearCampo(PanelRedondeado panel, int y) {
+        JTextField campo = new JTextField();
+        campo.setBounds(45, y, 300, 32);
+        campo.setFont(new Font("Arial", Font.PLAIN, 13));
+        campo.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(180, 200, 210), 1),
+                BorderFactory.createEmptyBorder(4, 10, 4, 10)
+        ));
+        panel.add(campo);
+        return campo;
+    }
+
+    private JPasswordField crearPassword(PanelRedondeado panel, int y) {
+        JPasswordField campo = new JPasswordField();
+        campo.setBounds(45, y, 300, 32);
+        campo.setFont(new Font("Arial", Font.PLAIN, 13));
+        campo.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(180, 200, 210), 1),
+                BorderFactory.createEmptyBorder(4, 10, 4, 10)
+        ));
+        panel.add(campo);
+        return campo;
+    }
+
+    private JLabel crearLabel(String texto, int y) {
+        JLabel label = new JLabel(texto);
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font("Arial", Font.BOLD, 12));
+        label.setBounds(48, y, 180, 15);
+        return label;
     }
 
     private void registrarUsuario() {
@@ -126,42 +147,42 @@ public class RegistroFrame extends JFrame {
         String confirmarContrasena = new String(txtConfirmarContrasena.getPassword()).trim();
 
         if (nombreUsuario.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Falta el campo: nombre de usuario");
+        	Mensajes.mostrarInfo(this, "Falta el campo: nombre de usuario");
             return;
         }
 
         if (nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Falta el campo: nombre");
+        	Mensajes.mostrarInfo(this, "Falta el campo: nombre");
             return;
         }
 
         if (apellido.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Falta el campo: apellido");
+        	Mensajes.mostrarInfo(this, "Falta el campo: apellido");
             return;
         }
 
         if (telefono.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Falta el campo: telefono");
+        	Mensajes.mostrarInfo(this, "Falta el campo: telefono");
             return;
         }
 
         if (correo.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Falta el campo: correo electronico");
+            Mensajes.mostrarInfo(this, "Falta el campo: correo electronico");
             return;
         }
 
         if (contrasena.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Falta el campo: contrasena");
+        	Mensajes.mostrarInfo(this, "Falta el campo: contrasena");
             return;
         }
 
         if (confirmarContrasena.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Falta el campo: confirmar contrasena");
+        	Mensajes.mostrarInfo(this, "Falta el campo: confirmar contrasena");
             return;
         }
 
         if (!contrasena.equals(confirmarContrasena)) {
-            JOptionPane.showMessageDialog(this, "La contrasena y su confirmacion no coinciden.");
+        	Mensajes.mostrarInfo(this, "La contrasena y su confirmacion no coinciden.");
             return;
         }
 
@@ -170,7 +191,7 @@ public class RegistroFrame extends JFrame {
         boolean registrado = usuarioServicio.registrarUsuario(usuario);
 
         if (registrado) {
-            JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
+        	Mensajes.mostrarInfo(this, "Usuario registrado correctamente.");
 
             if (principalFrame != null) {
                 principalFrame.cargarUsuarios();
@@ -178,7 +199,7 @@ public class RegistroFrame extends JFrame {
 
             dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "No se pudo registrar el usuario. Verifique si el usuario o correo ya existen.");
+        	Mensajes.mostrarInfo(this, "No se pudo registrar el usuario. Verifique si el usuario o correo ya existen.");
         }
     }
 }
